@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+vars:
+  TODO_QUERY_OUT: Todo.md
+
+tasks:
+  build:
+    cmds: [npm run build]
+  deploy:
+    deps: [build]
+    cmds:
+      - mkdir -p "$(dirname "{{.TODO_QUERY_OUT}}")"
+      - >-
+          awk '
+          /^import .* from .*/ {
+            next
+          }
+          {
+            code = code $0 "\n"
+          }
+          END {
+            print "```dataviewjs"
+            print code
+            print "```"
+          }' output/main.js > "{{.TODO_QUERY_OUT}}"
