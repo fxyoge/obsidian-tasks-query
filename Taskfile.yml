@@ -20,6 +20,9 @@ tasks:
             code = code $0 "\n"
           }
           END {
+            print "---"
+            print "obsidianUIMode: preview"
+            print "---"
             print "```dataviewjs"
             print code
             print "```"
